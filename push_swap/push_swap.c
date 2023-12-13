@@ -6,6 +6,7 @@
 void    stack_initializor(t_node **a, char **argv, int size)
 {
 	t_node	*tmp;
+	t_node	*start;
 	int	i;
 
 	i = 0;
@@ -17,16 +18,20 @@ void    stack_initializor(t_node **a, char **argv, int size)
 		tmp->content = atoi(argv[i]);
 		tmp->next = NULL;
 		if (*a == NULL)
+		{	
 			*a = tmp;
+			start = *a;
+		}
 		else
 		{
-			tmp->prev = *a;
-			(*a)->next = tmp;
-			*a = tmp;
+			tmp->prev = start;
+			start->next = tmp;
+			start = tmp;
 		}
 		// printf("%d ", tmp->content);
 		i++;
 	}
+	
 }
 
 // //a = 40 90 30 80 10 
@@ -55,7 +60,7 @@ void swap(t_node **lst)
 void quickSort(t_node *a)
 {
 	int	pivot = a->content;
-	int	len = ft_lstsize(a);
+	// int	len = ft_lstsize(a);
 
 	while(a)
 	{
@@ -93,7 +98,7 @@ int	main(int argc, char **argv)
 
 	if (argc > 1)
 		stack_initializor(&a, argv + 1, argc - 1);
-	quickSort(a);
+	// quickSort(a);
 	printList(a);
 	free_linked_list(a);
 	return(0);
