@@ -3,6 +3,18 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+t_node    *ft_lstlast(const t_node *lst)
+{
+
+    if (!lst)
+        return (NULL);
+    while (lst->next != NULL)
+    {
+        lst = lst->next;
+    }
+    return ((t_node *)lst);
+}
+
 void    stack_initializor(t_node **a, char **argv, int size)
 {
 	t_node	*tmp;
@@ -14,7 +26,10 @@ void    stack_initializor(t_node **a, char **argv, int size)
 	{
 		tmp = malloc(sizeof(t_node));
 		if (tmp == NULL)
+		{
+			free_linked_list(*a);
 			return ;
+		}
 		tmp->content = atoi(argv[i]);
 		tmp->next = NULL;
 		if (*a == NULL)
@@ -28,46 +43,47 @@ void    stack_initializor(t_node **a, char **argv, int size)
 			start->next = tmp;
 			start = tmp;
 		}
-		// printf("%d ", tmp->content);
 		i++;
 	}
 	
 }
 
-// //a = 40 90 30 80 10 
-// //b = .  .  .  .  .
-// //40 is the pivot
-void swap(t_node **lst)
+void	swap(t_node **head)
 {
-    t_node *first;
-    t_node *second;
+	t_node *tmp;
 
-	printf("%s ", "hey");
-    first = *lst;
-    second = (*lst)->next;
-    if (*lst == NULL || (*lst)->next == NULL)
-        return ;
-    first->prev = second;
-    first->next = second->next;
-    if (second->next)
-        second->next->prev = first;
-    second->next = first;
-    second->prev = NULL;
-    *lst = second; 
+	if (*head == NULL || (*head)->next == NULL)
+		return ;
+	tmp = *head;
+	*head = (*head)->next;
+	tmp->next = (*head)->next;
+	tmp->prev = *head;
+	(*head)->next = tmp;
+	(*head)->prev = NULL;
 }
-
-
-void quickSort(t_node *a)
+void	partition(t_node *a)
 {
-	int	pivot = a->content;
-	// int	len = ft_lstsize(a);
+	t_node	*i;
+	t_node	*j;
+	t_node	*low;
+	t_node 	*high;
+	int	pivot;
 
-	while(a)
+	low = a;
+	high = ft_lstlast(a);
+	i = low;
+	j = low;
+	pivot = high->content;
+	while (j != high)
 	{
-		if (a->content < pivot)
-			swap(&a);
-		a = a->next;	
+		if (j->content < pivot)
+		{
+			swap(&a->head);
+			i = i->next;
+		}
+		j = j->next;
 	}
+	swap(&a->head);
 }
 
 void	free_linked_list(t_node *lst)
@@ -94,13 +110,11 @@ void printList(t_node *head)
 int	main(int argc, char **argv)
 {
 	static t_node	*a = NULL;
-	// static t_node	*b = NULL;
 
 	if (argc > 1)
 		stack_initializor(&a, argv + 1, argc - 1);
-	// quickSort(a);
+	partition(a);
 	printList(a);
 	free_linked_list(a);
 	return(0);
 }
-

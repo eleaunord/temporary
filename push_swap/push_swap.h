@@ -6,7 +6,7 @@
 /*   By: eleroty <eleroty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 17:49:19 by eleroty           #+#    #+#             */
-/*   Updated: 2023/12/13 14:26:29 by eleroty          ###   ########.fr       */
+/*   Updated: 2023/12/14 18:33:15 by eleroty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 typedef struct s_node
 {
     int             content;
+    int             index;
     struct s_node   *next;
     struct s_node   *prev;
 } t_node;
@@ -44,11 +45,14 @@ void	free_linked_list(t_node *lst);
 // void    rb(t_node **b);
 // void    rr(t_node **b, t_node **a);
 
-void swap(t_node **lst);
+// void swap(t_node *first, t_node *second, t_node **lst);
+void	swap(t_node **head);
+// int	get_high_index(t_node *a);
 void    sa(t_node **a);
 // void    sb(t_node **b);
 // void    ss(t_node **a, t_node **b);
 
 int ft_lstsize(t_node *lst);
+t_node    *ft_lstlast(const t_node *lst);
 
 #endif
