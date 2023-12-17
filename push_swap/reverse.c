@@ -1,17 +1,21 @@
 #include "push_swap.h"
 
-static void reverse(t_node **lst)
+void	reverse(t_node **lst)
 {
-    t_node  *last;
+	t_node	*last;
+	t_node	*tmp;
 
-    if (*lst == NULL || (*lst)->next == NULL)
-        return ;
-    last = ft_lstlast(*lst);
-    last->prev->next = NULL;
-    last->next = *lst;
-    last->prev = NULL;
-    *lst = last;
-    last->next->prev = last;
+	last = *lst;
+	tmp = *lst;
+	while (last->next)
+	{
+		last = last->next;
+		if (last->next == NULL)
+			break ;
+		tmp = tmp->next;
+	}
+	ft_lstadd_front(lst, last);
+	tmp->next = NULL;
 }
 
 void    rra(t_node **a)

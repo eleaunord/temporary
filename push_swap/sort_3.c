@@ -1,26 +1,57 @@
 #include "push_swap.h"
+#include <limits.h>
 
-void	sort_3(t_node *lst)
+min_values find_min(t_node *head)
 {
-	t_node	*i;
-	t_node	*j;
-	t_node	*low;
-	t_node 	*high;
-	int	pivot;
+    min_values result = {INT_MAX, INT_MAX};
 
-	low = lst;
-	high = ft_lstlast(lst);
-	i = low;
-	j = low;
-	pivot = high->content;
-	while (j != high)
-	{
-		if (j->content < pivot)
-		{
-			swap();
-			i = i->next;
-		}
-		j = j->next;
-	}
-	swap(&a->head);
+    while (head != NULL)
+    {
+        if (head->content < result.min) 
+        {
+            result.next_min = result.min;
+            result.min = head->content;
+        }
+        else if (head->content < result.next_min && head->content != result.min)
+        {
+            result.next_min = head->content;
+        }
+        head = head->next;
+    }
+
+    return result;
+}
+
+
+void	sort_3(t_node **lst)
+{
+    t_node *head;
+
+    head = *lst;
+    min_values minValues = find_min(*lst);
+    //minValues.min and minValues.next_min
+    if (head->content == minValues.min && head->next->content != minValues.next_min)
+    {
+        sa(lst);
+        ra(lst);
+    }
+    else if (head->content == minValues.next_min)
+    {
+        if (head->next->content == minValues.min)
+            sa(lst);
+        else
+            rra(lst); 
+    }
+    else
+    {
+        if (head->next->content == minValues.min)
+            ra(lst);
+        else
+        {
+            sa(lst);
+            rra(lst);
+        }
+        
+    }
+
 }

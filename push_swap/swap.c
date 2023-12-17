@@ -1,21 +1,17 @@
 #include "push_swap.h"
-// void swap(t_node **lst)
-// {
-//     t_node *first;
-//     t_node *second;
+void	swap(t_node **head)
+{
+	t_node *tmp;
 
-//     first = *lst;
-//     second = (*lst)->next;
-//     if (*lst == NULL || (*lst)->next == NULL)
-//         return ;
-//     first->prev = second;
-//     first->next = second->next;
-//     if (second->next)
-//         second->next->prev = first;
-//     second->next = first;
-//     second->prev = NULL;
-//     *lst = second; 
-// }
+	if (*head == NULL || (*head)->next == NULL)
+		return ;
+	tmp = *head;
+	*head = (*head)->next;
+	tmp->next = (*head)->next;
+	tmp->prev = *head;
+	(*head)->next = tmp;
+	(*head)->prev = NULL;
+}
 
 void    sa(t_node **a)
 {

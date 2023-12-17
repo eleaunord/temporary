@@ -32,8 +32,9 @@ t_node    *ft_lstlast(t_node *lst)
     {
         lst = lst->next;
     }
-    return (lst);
+    return ((t_node *)lst);
 }
+
 void    ft_lstadd_back(t_node **lst, t_node *new)
 {
     t_node  *last;
@@ -48,3 +49,4 @@ void    ft_lstadd_back(t_node **lst, t_node *new)
     last = ft_lstlast(*lst);
     last->next = new;
 }
+

@@ -6,7 +6,7 @@
 /*   By: eleroty <eleroty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 17:49:19 by eleroty           #+#    #+#             */
-/*   Updated: 2023/12/14 18:33:15 by eleroty          ###   ########.fr       */
+/*   Updated: 2023/12/17 17:56:59 by eleroty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,15 @@
 typedef struct s_node
 {
     int             content;
-    int             index;
+    int             *array;
     struct s_node   *next;
     struct s_node   *prev;
 } t_node;
+
+typedef struct {
+    int min;
+    int next_min;
+} min_values;
 
 void    stack_initializor(t_node **a, char **argv, int size);
 void	quick_sort(t_node *a);
@@ -30,18 +35,21 @@ void	free_linked_list(t_node *lst);
 int	main(int argc, char **argv);
 void quickSort(t_node *a);
 void	free_linked_list(t_node *lst);
-
+// int    find_min(t_node **lst, int prev_min);
+void	sort_3(t_node **lst);
+void simple(t_node **lst);
+min_values find_min(t_node *head);
 // static void push(t_node **dest, t_node **src);
 // void    pa(t_node **a, t_node **b);
 // void    pb(t_node **b, t_node **a);
-
+void printList(t_node *head);
 // static void reverse(t_node **lst);
-// void    rra(t_node **a);
+void    rra(t_node **a);
 // void    rrb(t_node **b);
 // void    rrr(t_node **a, t_node **b);
 
-// static void rotate(t_node **lst);
-// void    ra(t_node **a);
+void rotate(t_node **lst);
+void    ra(t_node **a);
 // void    rb(t_node **b);
 // void    rr(t_node **b, t_node **a);
 
@@ -53,6 +61,7 @@ void    sa(t_node **a);
 // void    ss(t_node **a, t_node **b);
 
 int ft_lstsize(t_node *lst);
-t_node    *ft_lstlast(const t_node *lst);
+t_node    *ft_lstlast(t_node *lst);
+void    ft_lstadd_front(t_node **lst, t_node *new);
 
 #endif

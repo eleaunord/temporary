@@ -17,20 +17,3 @@ int    find_max(t_node *lst)
     }
     return (max);
 }
-int    find_min(t_node *lst)
-{
-    int min;
-    int current;
-
-    min = lst->content;
-    while (lst->next != NULL)
-    {
-        current = lst->next->content;
-        if (current < min)
-        {
-            min = current;
-        }
-        lst = lst->next;
-    }
-    return (min);
-}

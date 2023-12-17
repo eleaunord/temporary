@@ -3,18 +3,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-t_node    *ft_lstlast(const t_node *lst)
-{
-
-    if (!lst)
-        return (NULL);
-    while (lst->next != NULL)
-    {
-        lst = lst->next;
-    }
-    return ((t_node *)lst);
-}
-
 void    stack_initializor(t_node **a, char **argv, int size)
 {
 	t_node	*tmp;
@@ -48,43 +36,30 @@ void    stack_initializor(t_node **a, char **argv, int size)
 	
 }
 
-void	swap(t_node **head)
-{
-	t_node *tmp;
+// void	partition(t_node *a)
+// {
+// 	t_node	*i;
+// 	t_node	*j;
+// 	t_node	*low;
+// 	t_node 	*high;
+// 	int	pivot;
 
-	if (*head == NULL || (*head)->next == NULL)
-		return ;
-	tmp = *head;
-	*head = (*head)->next;
-	tmp->next = (*head)->next;
-	tmp->prev = *head;
-	(*head)->next = tmp;
-	(*head)->prev = NULL;
-}
-void	partition(t_node *a)
-{
-	t_node	*i;
-	t_node	*j;
-	t_node	*low;
-	t_node 	*high;
-	int	pivot;
-
-	low = a;
-	high = ft_lstlast(a);
-	i = low;
-	j = low;
-	pivot = high->content;
-	while (j != high)
-	{
-		if (j->content < pivot)
-		{
-			swap(&a->head);
-			i = i->next;
-		}
-		j = j->next;
-	}
-	swap(&a->head);
-}
+// 	low = a;
+// 	high = ft_lstlast(a);
+// 	i = low;
+// 	j = low;
+// 	pivot = high->content;
+// 	while (j != high)
+// 	{
+// 		if (j->content < pivot)
+// 		{
+// 			swap(&a->head);
+// 			i = i->next;
+// 		}
+// 		j = j->next;
+// 	}
+// 	swap(&a->head);
+// }
 
 void	free_linked_list(t_node *lst)
 {
@@ -113,7 +88,9 @@ int	main(int argc, char **argv)
 
 	if (argc > 1)
 		stack_initializor(&a, argv + 1, argc - 1);
-	partition(a);
+	// partition(a);
+	printList(a);
+	sort_3(&a);
 	printList(a);
 	free_linked_list(a);
 	return(0);

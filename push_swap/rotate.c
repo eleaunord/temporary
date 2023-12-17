@@ -1,6 +1,6 @@
 #include "push_swap.h"
 
-static void rotate(t_node **lst)
+void rotate(t_node **lst)
 {
     t_node  *last;
 
