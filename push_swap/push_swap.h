@@ -6,7 +6,7 @@
 /*   By: eleroty <eleroty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 17:49:19 by eleroty           #+#    #+#             */
-/*   Updated: 2023/12/17 17:56:59 by eleroty          ###   ########.fr       */
+/*   Updated: 2023/12/20 18:04:05 by eleroty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,13 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
+#include <limits.h>
 
 typedef struct s_node
 {
     int             content;
-    int             *array;
+    int             *index;
     struct s_node   *next;
     struct s_node   *prev;
 } t_node;
@@ -29,6 +31,15 @@ typedef struct {
     int next_min;
 } min_values;
 
+typedef struct {
+    int max;
+    int next_max;
+} max_values;
+
+void	push_rules_2(t_node **a, t_node **b);
+void	last_case(t_node **a, t_node **b);
+int	size_five(t_node **a, t_node **b, int size);
+bool	is_sorted(t_node **stack);
 void    stack_initializor(t_node **a, char **argv, int size);
 void	quick_sort(t_node *a);
 void	free_linked_list(t_node *lst);
@@ -39,14 +50,17 @@ void	free_linked_list(t_node *lst);
 void	sort_3(t_node **lst);
 void simple(t_node **lst);
 min_values find_min(t_node *head);
-// static void push(t_node **dest, t_node **src);
-// void    pa(t_node **a, t_node **b);
-// void    pb(t_node **b, t_node **a);
+void push(t_node **dest, t_node **src);
+void    pa(t_node **a, t_node **b);
+void    pb(t_node **b, t_node **a);
 void printList(t_node *head);
 // static void reverse(t_node **lst);
 void    rra(t_node **a);
 // void    rrb(t_node **b);
 // void    rrr(t_node **a, t_node **b);
+max_values find_max(t_node *head);
+
+void sort_5(t_node **a, t_node **b);
 
 void rotate(t_node **lst);
 void    ra(t_node **a);

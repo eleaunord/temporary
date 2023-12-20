@@ -1,5 +1,4 @@
 #include "push_swap.h"
-#include <limits.h>
 
 min_values find_min(t_node *head)
 {
@@ -30,6 +29,8 @@ void	sort_3(t_node **lst)
     head = *lst;
     min_values minValues = find_min(*lst);
     //minValues.min and minValues.next_min
+    if (is_sorted(lst) == true)
+		return ;
     if (head->content == minValues.min && head->next->content != minValues.next_min)
     {
         sa(lst);

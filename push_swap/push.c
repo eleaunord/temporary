@@ -1,6 +1,6 @@
 #include "push_swap.h"
 
-static void push(t_node **dest, t_node **src)
+void push(t_node **dest, t_node **src)
 {
     t_node  *first;
 
