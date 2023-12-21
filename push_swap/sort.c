@@ -16,7 +16,7 @@ bool	is_sorted(t_node **stack)
 
 max_values find_max(t_node *head)
 {
-    max_values  result = {INT_MAX, INT_MAX};
+    max_values  result = {INT_MIN, INT_MIN};
 
     while (head != NULL)
     {

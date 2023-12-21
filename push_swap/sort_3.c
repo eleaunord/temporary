@@ -1,27 +1,5 @@
 #include "push_swap.h"
 
-min_values find_min(t_node *head)
-{
-    min_values result = {INT_MAX, INT_MAX};
-
-    while (head != NULL)
-    {
-        if (head->content < result.min) 
-        {
-            result.next_min = result.min;
-            result.min = head->content;
-        }
-        else if (head->content < result.next_min && head->content != result.min)
-        {
-            result.next_min = head->content;
-        }
-        head = head->next;
-    }
-
-    return result;
-}
-
-
 void	sort_3(t_node **lst)
 {
     t_node *head;
@@ -52,7 +30,5 @@ void	sort_3(t_node **lst)
             sa(lst);
             rra(lst);
         }
-        
     }
-
 }

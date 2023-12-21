@@ -84,8 +84,8 @@ void printList(t_node *head)
 
 int	main(int argc, char **argv)
 {
-	static t_node	*a = NULL;
-	static t_node	*b = NULL;
+	t_node	*a = NULL;
+	t_node	*b = NULL;
 
 
 	if (argc > 1)
@@ -94,12 +94,13 @@ int	main(int argc, char **argv)
 	}
 	b = (t_node *)malloc(sizeof(t_node));
 	// partition(a);
-	printList(a);
+	// printList(a);
 	// printList(b);
-	// sort_3(&a);
+	sort_3(&a);
+	// sort_5(&a, &b);
 	sort_5(&a, &b);
 	printList(a);
-	free_linked_list(a);
-	free_linked_list(b);
+	// free_linked_list(a);
+	// free_linked_list(b);
 	return(0);
 }

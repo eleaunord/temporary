@@ -6,7 +6,7 @@
 /*   By: eleroty <eleroty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 17:49:19 by eleroty           #+#    #+#             */
-/*   Updated: 2023/12/20 18:04:05 by eleroty          ###   ########.fr       */
+/*   Updated: 2023/12/21 18:31:36 by eleroty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <limits.h>
+#include <unistd.h>
 
 typedef struct s_node
 {
@@ -36,6 +37,7 @@ typedef struct {
     int next_max;
 } max_values;
 
+t_node *find_max_node(t_node **a, int value);
 void	push_rules_2(t_node **a, t_node **b);
 void	last_case(t_node **a, t_node **b);
 int	size_five(t_node **a, t_node **b, int size);
@@ -61,6 +63,7 @@ void    rra(t_node **a);
 max_values find_max(t_node *head);
 
 void sort_5(t_node **a, t_node **b);
+// void sort_5(t_node **a);
 
 void rotate(t_node **lst);
 void    ra(t_node **a);
