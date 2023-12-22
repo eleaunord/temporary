@@ -1,5 +1,29 @@
 // #include "push_swap.h"
 
+// void	partition(t_node *a)
+// {
+// 	t_node	*i;
+// 	t_node	*j;
+// 	t_node	*low;
+// 	t_node 	*high;
+// 	int	pivot;
+
+// 	low = a;
+// 	high = ft_lstlast(a);
+// 	i = low;
+// 	j = low;
+// 	pivot = high->content;
+// 	while (j != high)
+// 	{
+// 		if (j->content < pivot)
+// 		{
+// 			swap(&a->head);
+// 			i = i->next;
+// 		}
+// 		j = j->next;
+// 	}
+// 	swap(&a->head);
+// }
 // int	size_five(t_node **a, t_node **b, int size)
 // {
 // 	if (size == 5)
