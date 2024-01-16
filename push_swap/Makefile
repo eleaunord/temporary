@@ -7,6 +7,9 @@ reverse.c \
 rotate.c \
 swap.c \
 lib.c \
+errors.c \
+sort.c \
+utils.c \
 
 OBJS = $(SRCS:.c=.o)
 

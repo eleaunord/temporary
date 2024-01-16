@@ -1,132 +1,88 @@
-// #include "push_swap.h"
-
-// void	partition(t_node *a)
+//  * Check if a given stack is sorted
+// */
+// bool	stack_sorted(t_stack_node *stack)
 // {
-// 	t_node	*i;
-// 	t_node	*j;
-// 	t_node	*low;
-// 	t_node 	*high;
-// 	int	pivot;
-
-// 	low = a;
-// 	high = ft_lstlast(a);
-// 	i = low;
-// 	j = low;
-// 	pivot = high->content;
-// 	while (j != high)
+// 	if (NULL == stack)
+// 		return (1);
+// 	while (stack->next)
 // 	{
-// 		if (j->content < pivot)
+// 		if (stack->value > stack->next->value)
+// 			return (false);
+// 		stack = stack->next;
+// 	}
+// 	return (true);
+// }
+
+// static t_stack_node	*find_highest(t_stack_node *stack)
+// {
+// 	int				highest;
+// 	t_stack_node	*highest_node;
+
+// 	if (NULL == stack)
+// 		return (NULL);
+// 	highest = INT_MIN;
+// 	while (stack)
+// 	{
+// 		if (stack->value > highest)
 // 		{
-// 			swap(&a->head);
-// 			i = i->next;
+// 			highest = stack->value;
+// 			highest_node = stack;
 // 		}
-// 		j = j->next;
+// 		stack = stack->next;
 // 	}
-// 	swap(&a->head);
-// }
-// int	size_five(t_node **a, t_node **b, int size)
-// {
-// 	if (size == 5)
-// 	{
-// 		if ((*b)->content < (*a)->content
-// 			&& (*b)->content > (*a)->prev->content)
-// 		{
-// 			pa(a, b);
-// 			rra(a);
-// 			rra(a);
-// 			return (1);
-// 		}
-// 	}
-// 	return (0);
+// 	return (highest_node);
 // }
 
-// int	push_rules_1(t_node **a, t_node **b, int size)
+// /*
+//  * When i have 3 nodes, easy to sort
+//  * 	~If the 1* is the biggest, ra (biggestto bottom)
+//  * 	~If the 2* is the biggest, rra (biggest to bottom)
+//  * 	~Now i have forcefully the Biggest at the bottom
+//  * 		so i just chek 1° and 2°
+// */
+// void	tiny_sort(t_stack_node **a)
 // {
-// 	max_values maxValues = find_max(*a);
-// 	if ((*b)->content > maxValues.max)
-// 	{
-// 		pa(a, b);
-// 		ra(a);
-// 	}
-// 	else if ((*b)->content < (*a)->content)
-// 		pa(a, b);
-// 	else if ((*b)->content > (*a)->content
-// 		&& (*b)->content < (*a)->next->content)
-// 	{
-// 		pa(a, b);
-// 		sa(a);
-// 	}
-// 	else if ((*a)->prev->content > (*b)->content
-// 		&& (*b)->content > (*a)->prev->prev->content)
-// 	{
-// 		rra(a);
-// 		pa(a, b);
-// 		if (size_five(a, b, size))
-// 			return (0);
-// 		ra(a);
-// 		ra(a);
-// 	}
-// 	return (1);
+// 	t_stack_node	*highest_node;
+
+// 	highest_node = find_highest(*a);
+// 	if (*a == highest_node)
+// 		ra(a, false);
+// 	else if ((*a)->next == highest_node)
+// 		rra(a, false);
+// 	if ((*a)->value > (*a)->next->value)
+// 		sa(a, false);
 // }
 
-// void	last_case(t_node **a, t_node **b)
+// /*
+//  * Handle input 5
+// */
+// void	handle_five(t_stack_node **a, t_stack_node **b)
 // {
-// 	ra(a);
-// 	ra(a);
-// 	pa(a, b);
-// 	rra(a);
-// 	rra(a);
-// }
-
-// void	push_rules_2(t_node **a, t_node **b)
-// {
-// 	if ((*b)->content < (*a)->content)
-// 		pa(a, b);
-// 	else if ((*b)->content > (*a)->prev->content)
+// 	while (stack_len(*a) > 3)
 // 	{
-// 		pa(a, b);
-// 		ra(a);
-// 	}
-// 	else if ((*b)->content > (*a)->content
-// 		&& (*b)->content < (*a)->next->content)
-// 	{
-// 		pa(a, b);
-// 		sa(a);
-// 	}
-// 	else if ((*b)->content < (*a)->prev->content
-// 		&& (*b)->content > (*a)->prev->prev->content)
-// 	{
-// 		rra(a);
-// 		pa(a, b);
-// 		ra(a);
-// 		ra(a);
-// 	}
-// 	else
-// 		last_case(a, b);
-// }
-
-// void	sort_5(t_node **a, t_node **b)
-// {
-
-// 	if (is_sorted(a) == true)
-// 		return ;
-// 	if (ft_lstsize((*a)) == 4)
-// 	{
-// 		pb(b, a);
-// 		sort_3(a);
-// 		push_rules_1(a, b, 4);
-// 	}
-// 	else
-// 	{
-// 		if (((*a)->content < (*a)->next->content)
-// 			&& ((*a)->next->content < (*a)->next->next->content)
-// 			&& ((*a)->next->next->content < (*a)->prev->prev->content)
-// 			&& ((*a)->prev->prev->content < (*a)->prev->content))
-// 			return ;
-// 		pb(a, b);
-// 		pb(a, b);
-// 		sort_3(a);
-// 		if (push_rules_1(a, b, 5))
-// 			push_rules_2(a, b);
+// 		init_nodes(*a, *b);
+// 		finish_rotation(a, find_smallest(*a), 'a');
+// 		pb(b, a, false);
 // 	}
 // }
+// void max_on_top(t_node **a, t_node *max_node, t_node **pos)
+// {
+//     t_node *prev_node;
+
+//     if (max_node != NULL && *a != NULL)
+//     {
+//         if (*a == max_node)
+//             return;
+//         prev_node = *a;
+//         // Find the node before max_node
+//         // NB : accessing NULL->next results in a segmentation fault
+//         while (prev_node->next != max_node && prev_node->next != NULL)
+//             prev_node = prev_node->next;
+//         // Check if max_node is not in the list
+//         if (prev_node->next == NULL)
+//             return;
+//         // Update pointers to move max_node to the head
+//         prev_node->next = max_node->next;
+//         max_node->next = *pos;
+//         *pos = max_node;
+//     }

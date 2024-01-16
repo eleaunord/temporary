@@ -6,7 +6,7 @@
 /*   By: eleroty <eleroty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 17:49:19 by eleroty           #+#    #+#             */
-/*   Updated: 2023/12/21 18:31:36 by eleroty          ###   ########.fr       */
+/*   Updated: 2024/01/15 17:08:32 by eleroty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,24 @@
 #include <limits.h>
 #include <unistd.h>
 
+// #include "../42cursus/libft/git/1- Libft/inc/libft.h"
+
+// NODES
 typedef struct s_node
 {
     int             content;
-    int             *index;
+    int             index;
+	int				push_cost;
+	bool 			first_half;
+	// bool			cheapest;
+	struct s_node	*cheapest_node;
     struct s_node   *next;
     struct s_node   *prev;
+	struct s_node   *target_node;
+	struct s_moves  *moves;
 } t_node;
 
+// MIN & MAX
 typedef struct {
     int min;
     int next_min;
@@ -37,12 +47,46 @@ typedef struct {
     int next_max;
 } max_values;
 
+// MOVES 
+typedef struct s_moves
+{
+	int					cost;
+	int					sa;
+	int					sb;
+	int					ss;
+	int					pa;
+	int					pb;
+	int					ra;
+	int					rb;
+	int					rr;
+	int					rra;
+	int					rrb;
+	int					rrr;
+} t_moves;
+
+typedef struct s_cheap
+{
+	int					cost;
+	int					sa;
+	int					sb;
+	int					ss;
+	int					pa;
+	int					pb;
+	int					ra;
+	int					rb;
+	int					rr;
+	int					rra;
+	int					rrb;
+	int					rrr;
+} t_cheap;
+
+// FUNCTIONS LIST
+
 t_node *find_max_node(t_node **a, int value);
 void	push_rules_2(t_node **a, t_node **b);
 void	last_case(t_node **a, t_node **b);
 int	size_five(t_node **a, t_node **b, int size);
 bool	is_sorted(t_node **stack);
-void    stack_initializor(t_node **a, char **argv, int size);
 void	quick_sort(t_node *a);
 void	free_linked_list(t_node *lst);
 int	main(int argc, char **argv);
@@ -80,5 +124,15 @@ void    sa(t_node **a);
 int ft_lstsize(t_node *lst);
 t_node    *ft_lstlast(t_node *lst);
 void    ft_lstadd_front(t_node **lst, t_node *new);
+char	**ft_split(char const *s, char c);
+
+// ERRORS
+int	is_error(char *element);
+int	*error_duplicate(t_node *a, int value);
+void	free_linked_list(t_node *lst);
+void	free_errors(t_node *a);
+
+// MAIN
+void    stack_initializor(t_node **a, char **argv);
 
 #endif
