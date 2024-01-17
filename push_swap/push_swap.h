@@ -6,7 +6,7 @@
 /*   By: eleroty <eleroty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 17:49:19 by eleroty           #+#    #+#             */
-/*   Updated: 2024/01/15 17:08:32 by eleroty          ###   ########.fr       */
+/*   Updated: 2024/01/17 16:29:07 by eleroty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,84 +47,29 @@ typedef struct {
     int next_max;
 } max_values;
 
-// MOVES 
-typedef struct s_moves
-{
-	int					cost;
-	int					sa;
-	int					sb;
-	int					ss;
-	int					pa;
-	int					pb;
-	int					ra;
-	int					rb;
-	int					rr;
-	int					rra;
-	int					rrb;
-	int					rrr;
-} t_moves;
-
-typedef struct s_cheap
-{
-	int					cost;
-	int					sa;
-	int					sb;
-	int					ss;
-	int					pa;
-	int					pb;
-	int					ra;
-	int					rb;
-	int					rr;
-	int					rra;
-	int					rrb;
-	int					rrr;
-} t_cheap;
-
 // FUNCTIONS LIST
 
-t_node *find_max_node(t_node **a, int value);
-void	push_rules_2(t_node **a, t_node **b);
-void	last_case(t_node **a, t_node **b);
-int	size_five(t_node **a, t_node **b, int size);
-bool	is_sorted(t_node **stack);
-void	quick_sort(t_node *a);
-void	free_linked_list(t_node *lst);
+// PUSH SWAP
+void    stack_initializor(t_node **a, char **argv);
+void printList(t_node *head);
 int	main(int argc, char **argv);
-void quickSort(t_node *a);
-void	free_linked_list(t_node *lst);
-// int    find_min(t_node **lst, int prev_min);
-void	sort_3(t_node **lst);
-void simple(t_node **lst);
-min_values find_min(t_node *head);
-void push(t_node **dest, t_node **src);
+
+// PUSH
+void	push(t_node **dest, t_node **src);
 void    pa(t_node **a, t_node **b);
 void    pb(t_node **b, t_node **a);
-void printList(t_node *head);
-// static void reverse(t_node **lst);
+
+//REVERSE
+void	reverse(t_node **lst);
 void    rra(t_node **a);
-// void    rrb(t_node **b);
-// void    rrr(t_node **a, t_node **b);
-max_values find_max(t_node *head);
+void    rrb(t_node **b);
+void    rrr(t_node **a, t_node **b);
 
-void sort_5(t_node **a, t_node **b);
-// void sort_5(t_node **a);
-
+// ROTATE
 void rotate(t_node **lst);
 void    ra(t_node **a);
-// void    rb(t_node **b);
-// void    rr(t_node **b, t_node **a);
-
-// void swap(t_node *first, t_node *second, t_node **lst);
-void	swap(t_node **head);
-// int	get_high_index(t_node *a);
-void    sa(t_node **a);
-// void    sb(t_node **b);
-// void    ss(t_node **a, t_node **b);
-
-int ft_lstsize(t_node *lst);
-t_node    *ft_lstlast(t_node *lst);
-void    ft_lstadd_front(t_node **lst, t_node *new);
-char	**ft_split(char const *s, char c);
+void    rb(t_node **b);
+void    rr(t_node **b, t_node **a);
 
 // ERRORS
 int	is_error(char *element);
@@ -132,7 +77,43 @@ int	*error_duplicate(t_node *a, int value);
 void	free_linked_list(t_node *lst);
 void	free_errors(t_node *a);
 
-// MAIN
-void    stack_initializor(t_node **a, char **argv);
+// SORT 3
+void	sort_3(t_node **lst);
+
+// SORT
+t_node *find_content_node(t_node **a, int value);
+int find_index_b(t_node **stack, int value);
+void    set_index(t_node *stack);
+void set_target_a_to_b(t_node *a, t_node *b);
+void set_target_b_to_a(t_node *a, t_node *b);
+void    cost_analysis(t_node *a, t_node *b);
+void    find_cheapest(t_node *a);
+void    push_a_to_b(t_node *a, t_node *b);
+void    is_min_on_top(t_node *a);
+void sort(t_node **a, t_node **b);
+
+// SWAP
+void	swap(t_node **head);
+void    sa(t_node **a);
+void    sb(t_node **b);
+void    ss(t_node **a, t_node **b);
+
+//UTILS
+bool	is_sorted(t_node **stack);
+max_values find_max(t_node *head);
+min_values find_min(t_node *head);
+
+// ERRORS
+int	is_error(char *element);
+int	*error_duplicate(t_node *a, int value);
+void	free_linked_list(t_node *lst);
+void	free_errors(t_node *a);
+
+// LIBFT
+int ft_lstsize(t_node *lst);
+void    ft_lstadd_front(t_node **lst, t_node *new);
+t_node    *ft_lstlast(t_node *lst);
+void    ft_lstadd_back(t_node **lst, t_node *new);
+char	**ft_split(char const *s, char c);
 
 #endif

@@ -14,7 +14,7 @@ void    stack_initializor(t_node **a, char **argv)
 	while (argv[i])
 	{
 		if (is_error(argv[i]))
-			free_errors(a);
+			free_errors(*a);
 		tmp = malloc(sizeof(t_node));
 		if (tmp == NULL)
 		{
@@ -22,7 +22,6 @@ void    stack_initializor(t_node **a, char **argv)
 			return ;
 		}
 		tmp->content = atoi(argv[i]);
-
 		tmp->next = NULL;
 		if (*a == NULL)
 		{	
@@ -36,9 +35,9 @@ void    stack_initializor(t_node **a, char **argv)
 			start = tmp;
 		}
 		if (tmp->content > INT_MAX || tmp->content < INT_MIN) //Check for overflow
-			free_errors(a);
+			free_errors(*a);
 		if (error_duplicate(*a, (int)tmp->content))
-			free_errors(a);
+			free_errors(*a);
 		i++;
 	}	
 }
@@ -64,7 +63,7 @@ int	main(int argc, char **argv)
 	else if (argc == 2) // case in which we have a string
 		argv = ft_split(argv[1], ' ');
 	stack_initializor(&a, argv + 1);
-	if (!is_sorted(a))
+	if (!is_sorted(&a))
 	{
 		if(ft_lstsize(a) == 2)
 			sa(&a);
@@ -83,8 +82,8 @@ int	main(int argc, char **argv)
 	// sort_3(&a);
 	// sort_5(&a, &b);
 	// sort_5(&a, &b);
-	printList(a);
-	printList(b);
+	// printList(a);
+	// printList(b);
 	// b = NULL;
 	// printList(b);
 

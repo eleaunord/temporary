@@ -4,12 +4,12 @@
 // Errors include for example: some arguments aren’t integers, some arguments are
 // bigger than an integer and/or there are duplicates.
 
+// iterating through the characters of a specific element and checking for syntax errors w/n that element
 int	is_error(char *element)
 {
-    if (!(*element == '+' || *element == '-' || *element >= '0' && *element <= '9')) //if it s not a sign or a nb
+    if (!(*element == '+' || *element == '-' || (*element >= '0' && *element <= '9'))) //if it s not a sign or a nb
         return (1);
-    // iterating through the characters of a specific element and checking for syntax errors w/n that element
-    while (*element)
+    while (*++element)
     {
         if (!(*element >= '0' && *element <= '9'))
             return (1);
@@ -34,7 +34,7 @@ void	free_linked_list(t_node *lst)
 
     if (!lst)
         return ;
-	while (lst != NULL)
+    while (lst != NULL)
 	{
 		tmp = lst;
 		lst = lst->next;

@@ -22,6 +22,7 @@ int find_index_b(t_node **stack, int value)
     t_node *current;
     int i;
 
+    i = 0;
     current = *stack;
     while (current != NULL)
     {
@@ -77,8 +78,9 @@ void set_target_a_to_b(t_node *a, t_node *b)
             current_b = current_b->next;
         }
         if (closest_smallest == INT_MIN)
-           target = maxValues.max;
-        a->target_node = target;
+           target = find_content_node(&b, maxValues.max);
+        else
+            a->target_node = target;
         a = a->next;
     }
 }
@@ -106,8 +108,9 @@ void set_target_b_to_a(t_node *a, t_node *b)
             current_a = current_a->next;
         }
         if (closest_biggest == INT_MAX)
-           target = minValues.min;
-        b->target_node = target;
+           target = find_content_node(&a, minValues.min);
+        else
+            b->target_node = target;
         b = b->next;
     }
 }
@@ -132,13 +135,14 @@ void    cost_analysis(t_node *a, t_node *b)
             a->push_cost += size_b - (a->target_node->index);
         else // if the target node is in the first half
             a->push_cost += a->target_node->index;
+        a = a->next;
     }
 }
 
 void    find_cheapest(t_node *a)
 {
     int cheap_cost;
-    t_node  *cheapest_node;
+    // t_node  *cheapest_node;
     t_node *current_a = a;
     
     cheap_cost = INT_MAX;
@@ -164,12 +168,13 @@ void    push_a_to_b(t_node *a, t_node *b)
     t_node  *head_a = a;
     t_node  *head_b = b;
 
+    //making sure the one at the top are not the cheapest nodes
     if ((head_a != a->cheapest_node) && (head_b != a->cheapest_node->target_node))
     {
         if (a->cheapest_node->first_half == false && a->target_node->first_half == false)
-            rr(b, a);
+            rr(&b, &a);
         if (a->cheapest_node->first_half == true && a->target_node->first_half == true)
-            rrr(b, a);
+            rrr(&b, &a);
     }
     //resetting indexes
     set_index(a);
@@ -178,19 +183,19 @@ void    push_a_to_b(t_node *a, t_node *b)
     while (head_a != a->cheapest_node)
     {
         if (a->cheapest_node->first_half == false)
-            ra(a);
+            ra(&a);
         else
-            rra(a);
+            rra(&a);
     }
     while (head_b != a->cheapest_node->target_node)
     {
         if (a->cheapest_node->target_node->first_half == false)
-            rb(b);
+            rb(&b);
         else
-            rrb(b);
+            rrb(&b);
     }
     //finally pushing a to b
-    pb(b, a);
+    pb(&b, &a);
 }
 
 //locate where smaller number is in the stack and then ra or rra depending on where is it in the median
@@ -198,14 +203,14 @@ void    is_min_on_top(t_node *a)
 {
     min_values minValues = find_min(a);
     t_node  *head_a = a;
-    t_node  *min_node = find_content_node(a, minValues.min);
+    t_node  *min_node = find_content_node(&a, minValues.min);
 
     while (head_a != min_node)
     {
         if (min_node->first_half == false)
-            ra(a);
+            ra(&a);
         else
-            rra(a);
+            rra(&a);
     }
 }
 
@@ -217,28 +222,29 @@ void sort(t_node **a, t_node **b)
 
     size_a = ft_lstsize(*a);
     nb_in_b = 0;
-    while (size_a > 3 && !is_sorted(*a) && nb_in_b < 2)
+    //pushing two limits in b
+    while (size_a > 3 && !is_sorted(a) && nb_in_b < 2)
     {
         pb(b, a);
         size_a--;
         nb_in_b++;
     }
-    while (size_a > 3 && !is_sorted(*a))
+    while (size_a > 3 && !is_sorted(a))
     {
         //every a node needs a target node from stack b
         //target = closest smaller nb to a OR max if not found
         //setting indexes for each node of a and keeping track if they're above the median or not
-        set_index(a);
+        set_index(*a);
         //setting indexes for each node of b and keeping track if they're above the median or not
-        set_index(b);
+        set_index(*b);
         //set a target node for each node of a in b // CLOSEST SMALLER
-        set_target_a_to_b(a, b);
+        set_target_a_to_b(*a, *b);
         //calculating the push cost for each node in a (depending on its position in a and the position of its target node in b)
-        cost_analysis(a, b);
+        cost_analysis(*a, *b);
         //finding the cheapest node to push according to its push cost
-        find_cheapest(a);
+        find_cheapest(*a);
         // move cheapest node in a found into sorted stack b until there are 3 nodes left in a
-        push_a_to_b(a, b);
+        push_a_to_b(*a, *b);
     }
     sort_3(a);
     while (*b)
@@ -246,11 +252,11 @@ void sort(t_node **a, t_node **b)
         //before we push b node back to stack a we need to make sure it will be pushed on top of the correct node
         //every b node as a target node in a
         // target node == closest biggest ow min
-        set_index(a);
+        set_index(*a);
         //setting indexes for each node of b and keeping track if they're above the median or not
-        set_index(b);
+        set_index(*b);
         //set a target node for each node of b in a // CLOSEST BIGGEST
-        set_target_b_to_a(a, b);
+        set_target_b_to_a(*a, *b);
         //making sure b target node in a is on top of stack a
         while ((*a) != (*b)->target_node)
         {
@@ -264,7 +270,7 @@ void sort(t_node **a, t_node **b)
     //refresh the current position of stack `a`
     set_index(*a);
     //check if min on top of stack a
-    is_min_on_top(a);
+    is_min_on_top(*a);
 }
 
 // t_node  *current_cheapest(t_node *a)
