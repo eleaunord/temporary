@@ -6,7 +6,7 @@
 /*   By: eleroty <eleroty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 16:02:17 by eleroty           #+#    #+#             */
-/*   Updated: 2024/01/17 17:57:24 by eleroty          ###   ########.fr       */
+/*   Updated: 2024/01/22 13:03:15 by eleroty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,21 @@
 typedef struct s_list {
 	void			*content;
 	struct s_list	*next;
-}	t_list;
+}	t_list ;
+
+// typedef struct s_node
+// {
+//     int             content;
+//     int             index;
+// 	int				push_cost;
+// 	// bool 			first_half;
+// 	// bool			cheapest;
+// 	struct s_node	*cheapest_node;
+//     struct s_node   *next;
+//     struct s_node   *prev;
+// 	struct s_node   *target_node;
+// 	struct s_moves  *moves;
+// } t_node;
 
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);
@@ -68,21 +82,39 @@ void	ft_lstdelone(t_list *lst, void (*del)(void*));
 void	ft_lstclear(t_list **lst, void (*del)(void*));
 void	ft_lstiter(t_list *lst, void (*f)(void *));
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
+int		ft_count(unsigned int n);
+int		int_putchar(char c);
+int		print_hexa_up(va_list lst, int base);
+int		print_hexa_low(va_list lst, int base);
+int		print_un(va_list lst);
+int		print_dec(va_list lst);
+void	ft_putchar(char c);
+int		print_char(va_list lst);
+void	ft_putstr(char *s);
+int		print_str(va_list lst);
+int		ft_hex_len(unsigned int n);
+int		hexa_converter(unsigned long n, int base);
+int		ft_putnbr(unsigned int n);
+int		print_void(va_list lst);
+int		arborescent(va_list *lst, const char *format, unsigned int *i);
+int		ft_printf(const char *format, ...);
+long		ft_atol(const char *nptr);
+int	is_it_space(const char num);
 
 // PRINTF
-void	ft_putchar(char c);
-int	print_char(va_list lst);
-int	int_putchar(char c);
-int	ft_count(unsigned int n);
-int	print_dec(va_list lst);
-int	print_hexa_low(va_list lst, int base);
-int	print_hexa_up(va_list lst, int base);
-void	ft_putstr(char *s);
-int	print_str(va_list lst);
-int	ft_putnbr(unsigned int n);
-int	print_un(va_list lst);
-int	ft_strlen_hex(unsigned long n);
-int	hexa_converter(unsigned long n, int base);
-int	print_void(va_list lst);
+// void	ft_putchar(char c);
+// int	print_char(va_list lst);
+// int	int_putchar(char c);
+// int	ft_count(unsigned int n);
+// int	print_dec(va_list lst);
+// int	print_hexa_low(va_list lst, int base);
+// int	print_hexa_up(va_list lst, int base);
+// void	ft_putstr(char *s);
+// int	print_str(va_list lst);
+// int	ft_putnbr(unsigned int n);
+// int	print_un(va_list lst);
+// int	ft_strlen_hex(unsigned long n);
+// int	hexa_converter(unsigned long n, int base);
+// int	print_void(va_list lst);
 
 #endif

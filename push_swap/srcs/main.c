@@ -1,46 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_str.c                                        :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eleroty <eleroty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/04 17:48:44 by eleroty           #+#    #+#             */
-/*   Updated: 2024/01/17 17:46:02 by eleroty          ###   ########.fr       */
+/*   Created: 2024/01/10 18:31:46 by smorin            #+#    #+#             */
+/*   Updated: 2024/01/19 17:32:30 by eleroty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+// #include "../push_swap.h"
 
-void	ft_putstr(char *s)
-{
-	int	i;
+// int	main(int c, char **v)
+// {
+	
+// 	ft_check_args(c, v);
+// 	ft_isnum("abc");
+// 	ft_contains(3, v, 3);
 
-	i = 0;
-	if (!s)
-		return ;
-	while (s[i])
-	{
-		ft_putchar(s[i]);
-		i++;
-	}
-}
-
-int	print_str(va_list lst)
-{
-	unsigned int	count;
-	const char		*string = (const char *)va_arg(lst, const char *);
-
-	count = 0;
-	if (!string)
-	{
-		ft_putstr("(null)");
-		return (6);
-	}
-	while (*string)
-	{
-		ft_putchar(*string++);
-		count++;
-	}
-	return (count);
-}
+// }
