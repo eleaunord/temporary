@@ -1,65 +1,44 @@
+
 #include <stdio.h>
 
-void    ft_swap(int *a, int *b)
-{
-    int tmp;
-
-    tmp = *a;
-    *a = *b;
-    *b = tmp;
-}
 void sort_int_tab(int *tab, unsigned int size)
 {
-    int j = 0;
-    int i = 0;
-    
-    if (size <= 1)
-        return ;
-    while (j < size)
+    unsigned int i;
+    unsigned int j;
+    unsigned int temp;
+
+    i = 0;
+    while(i < size - 1)
     {
-        i = 0;
-        while(i < size - 1)
+        j = 0;
+        // - i so that we have the number of unsorted elements remaining in the array
+        while(j < size - i - 1)
         {
-            if (tab[i] > tab[i + 1])
-                ft_swap(&tab[i], &tab[i + 1]);
-            i++;
+            if (tab[j] > tab[j + 1])
+            {
+                temp = tab[j];
+                tab[j] = tab[j + 1];
+                tab[j + 1] = temp;
+            }
+            j++;
         }
-        j++;
-    }
-}
-
-int main()
-{
-    int tab[] = {34, 41, 1, 2};
-    int i = 0;
-
-    sort_int_tab(tab, 4);
-    while (i < 4)
-    {
-        printf("%d ", tab[i]);
         i++;
     }
-    return 0;
 }
 
-// void	sort_int_tab(int *tab, unsigned int size)
-// {
-// 	int	idx;
-// 	int	bubble;
+int main(void)
+{
+    int tab[5] = {10, 2, 21, 4, 1};
+    int i = 0;
 
-// 	idx = 0;
-// 	bubble = 0;
-// 	if (size <= 1)
-// 		return ;
-// 	while (bubble < size)
-// 	{
-// 		idx = 0;
-// 		while (idx < (size - 1))
-// 		{
-// 			if (tab[idx] > tab[idx + 1])
-// 				ft_swap(&tab[idx], &tab[idx + 1]);
-// 			idx++;
-// 		}
-// 		bubble++;
-// 	}
-// }
+    sort_int_tab(tab, 5);
+
+    // Print the sorted array
+    printf("Sorted array: ");
+    while(i < 5)
+    {
+        printf("%d ", tab[i++]);
+    }
+    printf("\n");
+    return 0;
+}
