@@ -1,20 +1,14 @@
 EXOS RESTANTS
 
 Level 1
-repeat_alpha
+
 
 Level 2
-camel_to_snake
-do_op
-ft_strdup
-ft_strpbrk
-ft_strrev
-ft_strspn
-inter
-is_power_of_2
-snake_to_camel
-add_prime_sum
 
 Level 3
+print_hex
+str_capitalizer
+tab_mult
 
 Level 4
+ft_list_remove_if
