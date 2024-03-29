@@ -6,87 +6,99 @@
 /*   By: eleroty <eleroty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 09:56:48 by eleroty           #+#    #+#             */
-/*   Updated: 2024/03/28 13:43:03 by eleroty          ###   ########.fr       */
+/*   Updated: 2024/03/29 19:18:03 by eleroty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-static bool    check_characters(t_map *map)
+int	get_len(const char *s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
+}
+
+static bool    check_characters(t_game *game)
 {
     int x;
     int y;
     
-    map->collectibles = 0;
-    map->exit = 0;
-    map->player_pos = 0;
+    game->map->collectibles = 0;
+    game->map->exit = 0;
+    game->map->player_pos = 0;
     x = 0;
-    while(x < map->length)
+    while(x < game->map->rows)
     {
         y = 0;
-        while(y < map->height)
+        while(y < game->map->cols)
         {
-            if (map->body[x][y] == 'C')
-                map->collectibles++;
-            else if (map->body[x][y] == 'E')
-                map->exit++;
-            else if (map->body[x][y] == 'P')
-                map->player_pos++;
+            if (game->map->body[x][y] == 'C')
+                game->map->collectibles++;
+            else if (game->map->body[x][y] == 'E')
+                game->map->exit++;
+            else if (game->map->body[x][y] == 'P')
+                game->map->player_pos++;
             y++;
         }
         x++;
     }
-    if (map->exit == 0 || map->exit > 1 || map->player_pos == 0 || map->player_pos > 1 || map->collectibles == 0)
+    if (game->map->exit == 0 || game->map->exit > 1 || game->map->player_pos == 0 || game->map->player_pos > 1 || game->map->collectibles == 0)
         return (false);
     return (true);
 }
 
-static bool	check_walls(t_map *map)
+static bool	check_walls(t_game *game)
 {
     int     i;
     
     i = 0;
     //vertical walls
-    while (i < map->length)
+    while (i < game->map->rows)
     {
         //top and bottom characters
-        if (map->body[i][0] != '1' || map->body[i][map->height - 1] != '1')
+        if (game->map->body[i][0] != '1' || game->map->body[i][game->map->cols - 1] != '1')
             return (false);
         i++;
     }
     i = 0;
     //horizontal walls
-    while (i < map->height)
+    while (i < game->map->cols)
     {
         //left and right characters
-        if (map->body[0][i] != '1' || map->body[map->length - 1][i] != '1')
+        if (game->map->body[0][i] != '1' || game->map->body[game->map->rows - 1][i] != '1')
             return (false);
         i++;
     }
     return (true);
 }
 
-static bool	check_rectangle(t_map *map)
+bool	check_rectangle(t_game *game)
 {
-    size_t i;
-    size_t len;
+	int	i;
+	int	first_len;
 
-    len = map->length;
-    i = 0;
-    while (map->body[i] != NULL)
-    {
-        //if the length of the line is not the same as the length of the rectangle
-        if (len != ft_strlen(map->body[i]))
-            return (false);
-        i++;
-    }
-    return (true);
+	i = 0;
+	first_len = get_len(game->map->body[0]);
+	while (i < game->map->rows)
+		if (get_len(game->map->body[i++]) != first_len)
+			return (false);
+	game->map->cols = first_len;
+	return (true);
 }
 
-bool   check_map(t_map *map)
+
+void	check_map(t_game *game)
 {
-    if (check_rectangle(map) == true && check_walls(map) == true && check_characters(map) == true)
-        return (true);
-    else
-        return (false);
+	if (game->map->rows == 0)
+		exit_error("Map is empty.");
+	if (check_rectangle(game) == false)
+		exit_error("Map is not a rectangle.");
+	if (check_walls(game) == false)
+		exit_error("Map is not bounded.");
+	if (check_characters(game) == false)
+		exit_error("Map has invalid entities. ");
 }
