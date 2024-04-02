@@ -6,7 +6,7 @@
 /*   By: eleroty <eleroty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 15:01:04 by eleroty           #+#    #+#             */
-/*   Updated: 2024/03/29 19:18:13 by eleroty          ###   ########.fr       */
+/*   Updated: 2024/04/02 18:27:55 by eleroty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,11 @@ typedef struct s_map
 }				t_map;
 
 typedef struct s_sprite{
-	void	*wall;
+	void	*wall;	
+	void	*collectibles;
+	void	*player;
+	void	*empty;
+	void	*exit;
 	int		width;
 	int		height;
 }				t_sprite;
@@ -68,20 +72,48 @@ typedef struct s_game
 	t_point			next;
 	t_graphic		graphics;
 	t_sprite		sprite;
+	t_point			player_pos;
 	int	coins;
 	int	moves;
 }				t_game;
 
+enum {
+	ON_KEYDOWN = 2,
+	ON_KEYUP = 3,
+	ON_MOUSEDOWN = 4,
+	ON_MOUSEUP = 5,
+	ON_MOUSEMOVE = 6,
+	ON_EXPOSE = 12,
+	ON_DESTROY = 17
+};
 
 //main.c
+int	main(int argc, char *argv[]);
 int    exit_error(char *s);
+int	press(int keycode, t_game *game);
+void    move_player(t_game *game, bool left_or_right, int move);
+int key_hook(int keycode, t_game *game);
 
 //read_map.c
 void    read_map(char *path, t_game *game);
+t_map	*map_new(int cols, int rows);
+int	get_num_lines(char *path);
+char	*trim(char const *s1, char const *set);
+
 
 //check_map.c
 void   check_map(t_game *game);
+int	get_len(const char *s);
+bool	check_rectangle(t_game *game);
 
+//quit
+int    quit_game(t_game *game);
+void	free_map(t_game *game);
+void	destroy_sprites(t_game *game);
 
+//launch
+void    launch_game(t_game *game);
+void    put_images_to_window(t_game *game);
+void    launch_graphics(t_game *game);
 
 #endif

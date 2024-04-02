@@ -6,12 +6,81 @@
 /*   By: eleroty <eleroty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 15:01:42 by eleroty           #+#    #+#             */
-/*   Updated: 2024/03/29 19:10:01 by eleroty          ###   ########.fr       */
+/*   Updated: 2024/04/02 18:37:30 by eleroty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
+// int	close(int keycode, t_vars *vars)
+// {
+// 	mlx_destroy_window(vars->mlx, vars->win);
+// 	return (0);
+// }
+
+void    move_player(t_game *game, bool left_or_right, int move)
+{
+
+    if (left_or_right)
+    {
+        if (game->map->body[game->player_pos.y][game->player_pos.x + move] == '1')
+            return ;
+        if (game->map->body[game->player_pos.y][game->player_pos.x] == 'E')
+            mlx_put_image_to_window(game->graphics.mlx, game->graphics.win, game->sprite.exit, game->player_pos.x * 32, game->player_pos.y * 32);
+        else
+             mlx_put_image_to_window(game->graphics.mlx, game->graphics.win, game->sprite.empty, game->player_pos.x * 32, game->player_pos.y * 32);
+        game->player_pos.x += move;
+    }
+    else
+    {
+        if (game->map->body[game->player_pos.y + move][game->player_pos.x] == '1')
+            return ;
+        if (game->map->body[game->player_pos.y][game->player_pos.x] == 'E')
+            mlx_put_image_to_window(game->graphics.mlx, game->graphics.win, game->sprite.exit, game->player_pos.x * 32, game->player_pos.y * 32);
+        else
+             mlx_put_image_to_window(game->graphics.mlx, game->graphics.win, game->sprite.empty, game->player_pos.x * 32, game->player_pos.y * 32);
+        game->player_pos.y += move;
+    }
+    if (game->map->body[game->player_pos.y][game->player_pos.x] == 'C')
+    {
+        game->map->body[game->player_pos.y][game->player_pos.x] = '0';
+        game->coins++;
+        return ;
+    }
+    if (game->map->body[game->player_pos.y][game->player_pos.x] == 'E' && game->coins == game->map->collectibles)
+        quit_game(game);
+    game->moves++;
+    mlx_put_image_to_window(game->graphics.mlx, game->graphics.win, game->sprite.player, game->player_pos.x * 32, game->player_pos.y * 32);
+}
+
+int	press(int keycode, t_game *game)
+{
+    if (keycode == UP || keycode == W)
+        move_player(game, false, -1); // y + 1
+    if (keycode == DOWN || keycode == S)
+        move_player(game, false, 1); // y - 1
+    if (keycode == LEFT || keycode == A)
+        move_player(game, true, -1); // x - 1
+    if (keycode == RIGHT || keycode == D)
+        move_player(game, true, 1); // x + 1
+    return (0);
+}
+
+// int key_hook(int keycode, t_game *game)
+// {
+//     if (!game)
+//         exit_error("Memory error. ");
+//     if (press(keycode, game))
+//     {
+//         game->moves++;
+//         ft_printf("Steps : ");
+//         ft_putnbr(game->moves);
+//         ft_printf("\n");
+//     }
+//     // if (keycode == 53) == ESC
+//     return (0);
+        
+// }
 // create 2 or more images to hold frames + one tmp
 
 // void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
@@ -56,88 +125,19 @@ int    exit_error(char *s)
     return(0);
 }
 
-
-void    check_xpm(t_game *game)
-{
-    if (!game->sprite.wall)
-        exit_error("The reading of the wall image has failed. ");
-}
 // void	put_player_tile(t_game *game)
 // {
 // 	char	*moves_str;
 
 // 	game->moves += 1;
-// 	mlx_put_image_to_window(game->mlx_ptr, game->win_ptr, game->tiles.player,
+// 	mlx_put_image_to_window(game->graphics.mlx, game->win_ptr, game->sprite.player,
 // 		TILE_SIZE * game->map.player_pos.x, TILE_SIZE * game->map.player_pos.y);
-// 	mlx_put_image_to_window(game->mlx_ptr, game->win_ptr,
-// 		game->tiles.wall, 0, 0);
+// 	mlx_put_image_to_window(game->graphics.mlx, game->win_ptr,
+// 		game->sprite.wall, 0, 0);
 // 	moves_str = ft_itoa(game->moves);
-// 	mlx_string_put(game->mlx_ptr, game->win_ptr, 32, 10, 1, moves_str);
+// 	mlx_string_put(game->graphics.mlx, game->win_ptr, 32, 10, 1, moves_str);
 // 	free(moves_str);
 // }
-
-
-void    put_images_to_window(t_game *game)
-{
-    int x;
-    int y;
-
-    x = 0;
-    while(x < game->map->rows)
-    {
-        y = 0;
-        while(y < game->map->cols)
-        {
-            // if (map->body[x][y] == 'C')
-            //     mlx_put_image_to_window(game->mlx, game->win, game->collectibles, 32 * x, 32 * y);
-            // else if (map->body[x][y] == 'E')
-            //     mlx_put_image_to_window(game->mlx, game->win, game->exit, 32 * x, 32 * y);
-            // else if (map->body[x][y] == 'P')
-            //     mlx_put_image_to_window(game->mlx, game->win, game->player_pos, 32 * x, 32 * y);
-            if (game->map->body[x][y] == '1')
-                mlx_put_image_to_window(game->graphics.mlx, game->graphics.win, game->sprite.wall, 32 * x, 32 * y);
-            y++;
-        }
-        x++;
-    }
-}
-
-void    launch_graphics(t_game *game)
-{
-    int		img_width;
-	int		img_cols;
-
-    img_width = 32;
-    img_cols = 32;
-    game->sprite.wall = malloc(sizeof(void *));
-    if (!game->sprite.wall)
-		 exit_error("Failed sprite allocation. ");
-    game->sprite.wall = mlx_xpm_file_to_image(game->graphics.mlx, "./images/wall.xpm", &img_width, &img_cols);
-    // game->collectibles = mlx_xpm_file_to_image(game->mlx, "./images/collectibles.xpm", &img_width, &img_cols);
-    // game->exit = mlx_xpm_file_to_image(game->mlx, "./images/exit.xpm", &img_width, &img_cols);
-    // game->player_pos = mlx_xpm_file_to_image(game->mlx, "./images/player_pos.xpm", &img_width, &img_cols);
-    check_xpm(game);
-    put_images_to_window(game);
-}
-
-void    launch_game(t_game *game)
-{
-    // //init game ou calloc?
-    // ft_bzero(game, sizeof(t_game));
-    game->graphics.mlx = mlx_init();
-    if (!game->graphics.mlx)
-    {
-        // free(xvar);
-        exit_error("There is a problem with initializing the minilibx. ");
-    }
-    game->graphics.win = mlx_new_window(game->graphics.mlx, game->map->rows * 32, game->map->cols * 32, "./so_long");
-    if (!game->graphics.win)
-    {
-        // free(new_win);
-        exit_error("There is a problem with initializing the game window. ");
-    }
-    launch_graphics(game);
-} 
 
 
 int	main(int argc, char *argv[])
@@ -155,7 +155,14 @@ int	main(int argc, char *argv[])
         read_map(argv[1], &game);
         // LAUNCH GAME
         launch_game(&game);
+        // Move Player
+        // mlx_key_hook(game.graphics.win, key_hook, &game);
+        // mlx_hook(game.graphics.win, ON_KEYDOWN, (1L << 0), play, &game); // ou 2
+        mlx_hook(game.graphics.win, ON_KEYDOWN, (1L << 0), press, &game);
+        mlx_hook(game.graphics.win, ON_DESTROY, (1L<<17), quit_game, &game);
+        // mlx_loop_hook(game.graphics.mlx, render_frame, &game);
         mlx_loop(game.graphics.mlx);
+        
     }
     else if (argc != 2)
         exit_error("Invalid number of parameters. ");
