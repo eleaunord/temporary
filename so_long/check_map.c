@@ -6,7 +6,7 @@
 /*   By: eleroty <eleroty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 09:56:48 by eleroty           #+#    #+#             */
-/*   Updated: 2024/03/29 19:18:03 by eleroty          ###   ########.fr       */
+/*   Updated: 2024/04/03 16:52:38 by eleroty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,11 @@ static bool    check_characters(t_game *game)
             else if (game->map->body[x][y] == 'E')
                 game->map->exit++;
             else if (game->map->body[x][y] == 'P')
+            {
                 game->map->player_pos++;
+                game->player_pos.x = x;
+                game->player_pos.y = y;
+            }
             y++;
         }
         x++;
@@ -89,7 +93,6 @@ bool	check_rectangle(t_game *game)
 	game->map->cols = first_len;
 	return (true);
 }
-
 
 void	check_map(t_game *game)
 {

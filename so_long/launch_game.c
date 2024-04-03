@@ -6,7 +6,7 @@
 /*   By: eleroty <eleroty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 19:30:25 by eleroty           #+#    #+#             */
-/*   Updated: 2024/04/02 17:13:26 by eleroty          ###   ########.fr       */
+/*   Updated: 2024/04/03 18:11:14 by eleroty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,8 @@ void    launch_graphics(t_game *game)
     game->sprite.exit = mlx_xpm_file_to_image(game->graphics.mlx, "./images/exit.xpm", &img_width, &img_cols);
     game->sprite.player = mlx_xpm_file_to_image(game->graphics.mlx, "./images/player.xpm", &img_width, &img_cols);
     game->sprite.empty = mlx_xpm_file_to_image(game->graphics.mlx, "./images/empty.xpm", &img_width, &img_cols);
-    // check_xpm(game);
+    if (!game->sprite.wall || !game->sprite.collectibles || !game->sprite.player || !game->sprite.exit || !game->sprite.empty)
+		 exit_error("Failed xpm allocation. ");
     put_images_to_window(game);
 }
 
