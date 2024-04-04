@@ -6,7 +6,7 @@
 /*   By: eleroty <eleroty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 09:56:48 by eleroty           #+#    #+#             */
-/*   Updated: 2024/04/03 16:52:38 by eleroty          ###   ########.fr       */
+/*   Updated: 2024/04/04 15:51:51 by eleroty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,11 @@ static bool    check_characters(t_game *game)
             if (game->map->body[x][y] == 'C')
                 game->map->collectibles++;
             else if (game->map->body[x][y] == 'E')
+            {
                 game->map->exit++;
+                game->exit_pos.x = x;
+                game->exit_pos.y = y;
+            }
             else if (game->map->body[x][y] == 'P')
             {
                 game->map->player_pos++;
@@ -94,14 +98,36 @@ bool	check_rectangle(t_game *game)
 	return (true);
 }
 
+bool invalid_key(t_game *game)
+{
+    int x;
+    int y;
+    
+    x = 0;
+    while(x < game->map->rows)
+    {
+        y = 0;
+        while(y < game->map->cols)
+        {
+             if (game->map->body[x][y] != '1' && game->map->body[x][y] != 'C' && game->map->body[x][y] != 'E' && game->map->body[x][y] != 'P' && game->map->body[x][y] != '0')
+                return (false);
+            y++;
+        }
+        x++;
+    }
+    return (true);
+}
+
 void	check_map(t_game *game)
 {
 	if (game->map->rows == 0)
-		exit_error("Map is empty.");
+		exit_error("Map is empty.", game);
 	if (check_rectangle(game) == false)
-		exit_error("Map is not a rectangle.");
+		exit_error("Map is not a rectangle.", game);
 	if (check_walls(game) == false)
-		exit_error("Map is not bounded.");
+		exit_error("Map is not correctly bounded.", game);
 	if (check_characters(game) == false)
-		exit_error("Map has invalid entities. ");
+		exit_error("Map has an invalid number of entities. ", game);
+    if (invalid_key(game) == false)
+        exit_error("The map is not composed of the correct characters. ", game);
 }

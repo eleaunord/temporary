@@ -6,7 +6,7 @@
 /*   By: eleroty <eleroty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 15:01:04 by eleroty           #+#    #+#             */
-/*   Updated: 2024/04/02 18:27:55 by eleroty          ###   ########.fr       */
+/*   Updated: 2024/04/04 14:46:50 by eleroty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,13 +68,19 @@ typedef struct s_graphic {
 typedef struct s_game
 {
 	t_map			*map;	
-	t_point			curr;
+	t_point			player_pos;
+	t_point			exit_pos;
 	t_point			next;
 	t_graphic		graphics;
 	t_sprite		sprite;
-	t_point			player_pos;
+	void	*wall;	
+	void	*collectibles;
+	void	*player;
+	void	*empty;
+	void	*exit;
 	int	coins;
 	int	moves;
+	int	flag;
 }				t_game;
 
 enum {
@@ -89,15 +95,16 @@ enum {
 
 //main.c
 int	main(int argc, char *argv[]);
-int    exit_error(char *s);
+void    exit_error(char *s, t_game *game);
+// int	press(int keycode, t_game *game);
+// void    move_player(t_game *game, bool left_or_right, int move);
+void	move_player(t_game *game);
 int	press(int keycode, t_game *game);
-void    move_player(t_game *game, bool left_or_right, int move);
-int key_hook(int keycode, t_game *game);
 
 //read_map.c
 void    read_map(char *path, t_game *game);
 t_map	*map_new(int cols, int rows);
-int	get_num_lines(char *path);
+int	get_num_lines(char *path, t_game *game);
 char	*trim(char const *s1, char const *set);
 
 
@@ -105,6 +112,9 @@ char	*trim(char const *s1, char const *set);
 void   check_map(t_game *game);
 int	get_len(const char *s);
 bool	check_rectangle(t_game *game);
+
+bool	check_path(t_game *game);
+void	floodfill(t_game *game);
 
 //quit
 int    quit_game(t_game *game);

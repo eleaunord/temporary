@@ -20,21 +20,15 @@ int	checkstr(char *str)
 	while (str[i])
 	{
 		if (str[i] == 'C')
-		{
-			write (2, "ERROR C\n", 8);
 			return (1);
-		}
 		if (str[i] == 'P')
-		{
-			write (2, "ERROR P\n", 8);
-			return (1);
-		}
+			return (2);
 		i++;
 	}
 	return (0);
 }
 
-void	checkflood(char **copymap)
+void	checkflood(char **copymap, t_game *game)
 {
 	int	i;
 	int	ret;
@@ -48,8 +42,10 @@ void	checkflood(char **copymap)
 		i++;
 	}
 	free (copymap);
-	if (ret != 0)
-		exit_error("No path. ");
+	if (ret == 1)
+		exit_error("Collectible error : no possible path. ", game);
+	else if (ret == 2)
+		exit_error("Player error :No possible path. ", game);
 }
 
 int	fill(char **copy, int x, int y, t_game *game)
@@ -124,7 +120,7 @@ char	**mapcopy(t_game *game)
 		i++;
 	new = malloc(sizeof(char *) * (i + 1));
 	if (new == NULL)
-		exit_error("Error in map copy.");
+		exit_error("Error with the map copy.", game);
 	i = 0;
 	while (game->map->body[i])
 	{
@@ -145,6 +141,6 @@ void	floodfill(t_game *game)
 	copymap = mapcopy(game);
 	find_perso(game, &x, &y);
 	if (!fill(copymap, x, y, game))
-		exit_error("Error in exit.");
-	checkflood(copymap);
+		exit_error("Error with the exit.", game);
+	checkflood(copymap, game);
 }

@@ -6,7 +6,7 @@
 /*   By: eleroty <eleroty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 19:30:25 by eleroty           #+#    #+#             */
-/*   Updated: 2024/04/03 18:11:14 by eleroty          ###   ########.fr       */
+/*   Updated: 2024/04/04 15:42:53 by eleroty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,15 @@ void    put_images_to_window(t_game *game)
         while(y < game->map->cols)
         {
             if (game->map->body[x][y] == 'C')
-                mlx_put_image_to_window(game->graphics.mlx, game->graphics.win, game->sprite.collectibles, 32 * y, 32 * x);
+                mlx_put_image_to_window(game->graphics.mlx, game->graphics.win, game->collectibles, 32 * y, 32 * x);
             else if (game->map->body[x][y] == 'E')
-               mlx_put_image_to_window(game->graphics.mlx, game->graphics.win, game->sprite.exit, 32 * y, 32 * x);
+               mlx_put_image_to_window(game->graphics.mlx, game->graphics.win,  game->exit, 32 * y, 32 * x);
             else if (game->map->body[x][y] == 'P')
-                mlx_put_image_to_window(game->graphics.mlx, game->graphics.win, game->sprite.player, 32 * y, 32 * x);
+                mlx_put_image_to_window(game->graphics.mlx, game->graphics.win, game->player, 32 * y, 32 * x);
             else if (game->map->body[x][y] == '1')
-                mlx_put_image_to_window(game->graphics.mlx, game->graphics.win, game->sprite.wall, 32 * y, 32 * x);
+                mlx_put_image_to_window(game->graphics.mlx, game->graphics.win, game->wall, 32 * y, 32 * x);
             else if (game->map->body[x][y] == '0')
-                mlx_put_image_to_window(game->graphics.mlx, game->graphics.win, game->sprite.empty, 32 * y, 32 * x);
+                mlx_put_image_to_window(game->graphics.mlx, game->graphics.win, game->empty, 32 * y, 32 * x);
             y++;
         }
         x++;
@@ -46,20 +46,13 @@ void    launch_graphics(t_game *game)
 
     img_width = 32;
     img_cols = 32;
-    game->sprite.wall = malloc(sizeof(void *));
-    game->sprite.collectibles = malloc(sizeof(void *));
-    game->sprite.player = malloc(sizeof(void *));
-    game->sprite.exit = malloc(sizeof(void *));
-    game->sprite.empty = malloc(sizeof(void *));
-    if (!game->sprite.wall || !game->sprite.collectibles || !game->sprite.player || !game->sprite.exit || !game->sprite.empty)
-		 exit_error("Failed sprite allocation. ");
-    game->sprite.wall = mlx_xpm_file_to_image(game->graphics.mlx, "./images/wall.xpm", &img_width, &img_cols);
-    game->sprite.collectibles = mlx_xpm_file_to_image(game->graphics.mlx, "./images/collectibles.xpm", &img_width, &img_cols);
-    game->sprite.exit = mlx_xpm_file_to_image(game->graphics.mlx, "./images/exit.xpm", &img_width, &img_cols);
-    game->sprite.player = mlx_xpm_file_to_image(game->graphics.mlx, "./images/player.xpm", &img_width, &img_cols);
-    game->sprite.empty = mlx_xpm_file_to_image(game->graphics.mlx, "./images/empty.xpm", &img_width, &img_cols);
-    if (!game->sprite.wall || !game->sprite.collectibles || !game->sprite.player || !game->sprite.exit || !game->sprite.empty)
-		 exit_error("Failed xpm allocation. ");
+    game->wall = mlx_xpm_file_to_image(game->graphics.mlx, "./textures/wall.xpm", &img_width, &img_cols);
+    game->collectibles = mlx_xpm_file_to_image(game->graphics.mlx, "./textures/collectibles.xpm", &img_width, &img_cols);
+    game->exit = mlx_xpm_file_to_image(game->graphics.mlx, "./textures/exit.xpm", &img_width, &img_cols);
+    game->player = mlx_xpm_file_to_image(game->graphics.mlx, "./textures/player.xpm", &img_width, &img_cols);
+    game->empty = mlx_xpm_file_to_image(game->graphics.mlx, "./textures/empty.xpm", &img_width, &img_cols);
+    if (!game->wall || !game->collectibles || !game->player || ! game->exit || !game->empty)
+		 exit_error("Failed xpm allocation. ", game);
     put_images_to_window(game);
 }
 
@@ -68,16 +61,17 @@ void    launch_game(t_game *game)
     // //init game ou calloc?
     // ft_bzero(game, sizeof(t_game));
     game->graphics.mlx = mlx_init();
+    game->moves = -1;
     if (!game->graphics.mlx)
     {
         // free(xvar);
-        exit_error("There is a problem with initializing the minilibx. ");
+        exit_error("There is a problem with initializing the minilibx. ", game);
     }
     game->graphics.win = mlx_new_window(game->graphics.mlx, game->map->cols * 32, game->map->rows * 32, "./so_long");
     if (!game->graphics.win)
     {
         // free(new_win);
-        exit_error("There is a problem with initializing the game window. ");
+        exit_error("There is a problem with initializing the game window. ", game);
     }
     launch_graphics(game);
 } 
