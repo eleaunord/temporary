@@ -6,12 +6,51 @@
 /*   By: eleroty <eleroty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 11:21:33 by eleroty           #+#    #+#             */
-/*   Updated: 2024/04/28 14:58:45 by eleroty          ###   ########.fr       */
+/*   Updated: 2024/04/30 15:31:07 by eleroty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+
+void ft_usleep(size_t time_action)
+{
+	size_t start;
+	size_t current;
+
+	start = current_time(0);
+	current = start;
+	while((current - start) < time_action)
+	{
+		usleep(500);
+		current = current_time(0);
+	}
+}
+// check nb args, limit 200 for nb_philo, only nbs
+void	check_program_input(int argc, char *argv[])
+{
+	int		i;
+	char	*arg;
+	int		num;
+    
+	num = ft_atoi(argv[1]);
+	if (argc != 5 && argc != 6)
+		exit_error("Error in the number of arguments.\n");
+	if (num > 200)
+		exit_error("Do not test with more than 200 philosophers.\n");
+	i = 1;
+	while (i < argc)
+	{
+		arg = argv[i];
+		while (*arg)
+		{
+			if (!ft_isdigit(*arg))
+				exit_error("Command-line arguments must only be unsigned numbers.\n");
+			arg++;
+		}
+		i++;
+	}
+}
 size_t	current_time(long t0)
 {
 	struct timeval	time;

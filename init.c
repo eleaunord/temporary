@@ -6,7 +6,7 @@
 /*   By: eleroty <eleroty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 12:52:25 by eleroty           #+#    #+#             */
-/*   Updated: 2024/04/28 15:29:39 by eleroty          ###   ########.fr       */
+/*   Updated: 2024/04/30 15:56:21 by eleroty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,13 @@ void	init_rules(char **argv, t_philo *philos)
 {
 	philos->nb_philo = ft_atoi(argv[1]);
 	philos->time_die = ft_atoi(argv[2]);
-	philos->time_die = ft_atoi(argv[3]);
+	philos->time_eat = ft_atoi(argv[3]);
 	philos->time_sleep = ft_atoi(argv[4]);
+	if (philos->nb_philo == 1)
+    {
+        ft_usleep(philos->time_die);
+		//stop_simulation
+    }
 	if (argv[5])
 		philos->nb_times_to_eat = ft_atoi(argv[5]);
 	else
@@ -51,9 +56,11 @@ void	init_philos(t_philo *philos, t_program *program)
 		i++;
 	}
 }
+
 void	init_forks(pthread_mutex_t *forks, t_philo *philos)
 {
 	int	i;
+	int right_fork_id;
 
 	i = 0;
 	while (i < philos->nb_philo)
@@ -61,11 +68,12 @@ void	init_forks(pthread_mutex_t *forks, t_philo *philos)
 	i = 0;
 	while (i < philos->nb_philo)
 	{
-		philos[i].l_fork = &forks[i];
+		philos[i].left_fork = &forks[i];
 		if (i == 0)
-			philos[i].r_fork = &forks[philos[i].nb_philo - 1];
+			right_fork_id = &forks[philos[i].nb_philo - 1];
 		else
-			philos[i].r_fork = &forks[i - 1];
+			right_fork_id = &forks[i - 1];
+		philos[i].right_fork = &forks[right_fork_id];
 		i++;
 	}
 }
