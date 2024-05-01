@@ -6,7 +6,7 @@
 /*   By: eleroty <eleroty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 13:51:16 by eleroty           #+#    #+#             */
-/*   Updated: 2024/04/30 14:44:38 by eleroty          ###   ########.fr       */
+/*   Updated: 2024/05/01 14:46:20 by eleroty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,16 @@
 
 bool check_time_since_last_meal(t_philo *philos, int i)
 {
-    int time_since_last_meal;
+    size_t time_since_last_meal;
     
-    pthread_mutex_lock(&philos->meal_lock);
+    pthread_mutex_lock(philos->meal_lock);
     time_since_last_meal = current_time(philos[i].start_time) - philos[i].last_meal;
     if (time_since_last_meal >= philos->time_die)
     {
-        pthread_mutex_unlock(&philos->meal_lock);
+        pthread_mutex_unlock(philos->meal_lock);
         return false;
     }
-    pthread_mutex_unlock(&philos->meal_lock);
+    pthread_mutex_unlock(philos->meal_lock);
     return true;
 }
 
@@ -70,10 +70,10 @@ void *waitering(void *arg)
         {
             if (check_time_since_last_meal(philo, i) == false)
             {
-                print_action("has died", philo[i], philo[i].id);
-                pthread_mutex_unlock(&philo->dead_lock);
+                action("has died", philo, 0);
+                pthread_mutex_unlock(philo->dead_lock);
                 *philo->dead = 1;
-                pthread_mutex_lock(&philo->dead_lock);
+                pthread_mutex_lock(philo->dead_lock);
                 break ;            
             }
             if (check_all_ate(philo, i) == false)

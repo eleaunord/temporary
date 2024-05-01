@@ -6,12 +6,11 @@
 /*   By: eleroty <eleroty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 11:21:33 by eleroty           #+#    #+#             */
-/*   Updated: 2024/04/30 15:31:07 by eleroty          ###   ########.fr       */
+/*   Updated: 2024/05/01 16:12:15 by eleroty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
 
 void ft_usleep(size_t time_action)
 {

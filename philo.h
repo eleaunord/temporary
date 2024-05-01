@@ -6,7 +6,7 @@
 /*   By: eleroty <eleroty@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 11:20:07 by eleroty           #+#    #+#             */
-/*   Updated: 2024/04/30 16:23:10 by eleroty          ###   ########.fr       */
+/*   Updated: 2024/05/01 19:08:44 by eleroty          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,14 @@ typedef struct s_philo
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	*left_fork;
 	//2 int for forks
-	int				first_fork;
-	int				second_fork;	
+	// int				right_fork;
+	// int				left_fork;	
 	// 3 mutex pointers that point to the mutex in the program struct
 	pthread_mutex_t	*dead_lock;
 	pthread_mutex_t	*meal_lock;
 	pthread_mutex_t	*write_lock;
+	// pthread_mutex_t *forks;
+	// struct s_program *program;
 }					t_philo;
 
 // program structure
@@ -64,6 +66,7 @@ typedef struct s_program
 	pthread_mutex_t	dead_lock;
 	pthread_mutex_t	meal_lock;
 	pthread_mutex_t	write_lock;
+	pthread_mutex_t *forks;
 	// holds all the philo in an array
 	t_philo			*philos;
 }					t_program;
@@ -73,30 +76,36 @@ typedef struct s_program
 int					main(int argc, char *argv[]);
 void				check_program_input(int argc, char *argv[]);
 void	exit_error(char *message);
-void create_threads(t_philo *philos, t_program *program, pthread_mutex_t *forks);
-
+// void create_threads(t_program *program);
+void	create_threads(t_program *program, pthread_mutex_t *forks);
 // utils
 size_t	current_time(long t0);
 int					ft_atoi(const char *nptr);
 int					is_space(const char num);
 int					ft_isdigit(int c);
 void	check_program_input(int argc, char *argv[]);
+void ft_usleep(size_t time_action);
 
 // init
 void				init_program(t_program *program, t_philo *philos);
-void				init_rules(char **argv, t_philo *philos);
-void				init_philos(t_philo *philos, t_program *program);
-void				init_forks(pthread_mutex_t *forks, t_philo *philos);
-void				init_philosophers(t_program *program, t_philo *philos,
-						char **argv, pthread_mutex_t *forks);
+void	init_rules(char **argv, t_philo *philos);
+// void				init_philos(t_philo *philos, t_program *program);
+// void	init_forks(pthread_mutex_t *forks, int nb_philo);
+
+void	init_philos(t_philo *philos, t_program *program, pthread_mutex_t *forks,
+		char **argv);
+void	init_forks(pthread_mutex_t *forks, int nb_philo);
+// void	init_philos(t_philo *philos, t_program *program, char **argv);
 //end
-void destroy_philosophers(t_philo *philo, t_program *program, pthread_mutex_t	*forks);
+void stop_it(t_program *program, pthread_mutex_t *forks);
 void	exit_error(char *message);
 void game_over(t_philo *philos, int index, t_program *program);
-void stop_it(t_philo *philos, t_program *program, pthread_mutex_t *forks);
+
+void destroy_philosophers(t_program *program, pthread_mutex_t *forks);
 //routine
 bool dead(t_philo *philo);
-void action(char *s, t_philo *philo, int id, int time_action);
+
+void action(char *message, t_philo *philo, int time_action);
 void eat(t_philo *philo);
 void	*table_routine(void *arg);
 
@@ -106,4 +115,5 @@ int check_meals_eaten(t_philo *philos, int i);
 bool check_all_ate(t_philo *philos, int i);
 void *waitering(void *arg);
 
+int	dead_loop(t_philo *philo);
 #endif

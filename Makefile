@@ -5,7 +5,7 @@ SRC = main.c utils.c init.c routine.c waiter.c end.c
 
 MANPATH = $(SRC)
 
-FLAGS = -Wall -Wextra -Werror -O3 -pthread
+FLAGS = -Wall -Wextra -Werror -g3 -O3 -pthread
 
 HEADER = philo.h
 
