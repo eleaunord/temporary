@@ -10,10 +10,18 @@ int	is_space(const char num)
 		return (1);
 }
 
-int	is_separator(char *c)
+void	insert_node(t_list *elem, t_list *new_elem)
 {
-	if (!ft_strncmp(c, "<", 1) || !ft_strncmp(c, ">", 1) || !ft_strncmp(c, "|",
-			1) || !ft_strncmp(c, "(", 1) || !ft_strncmp(c, ")", 1))
-		return (0);
-	return (1);
+	if (elem)
+	{
+		if (elem->next)
+		{
+			new_elem->next = elem->next;
+			elem->next->prev = new_elem;
+		}
+		new_elem->prev = elem;
+		elem->next = new_elem;
+	}
+	else
+		elem = new_elem;
 }
