@@ -1,61 +1,92 @@
-# VARIABLES
-## binary
-NAME = cub3D
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2024/07/30 02:23:22 by marvin            #+#    #+#              #
+#    Updated: 2024/07/30 02:23:22 by marvin           ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
-## compilation
-CC = gcc
-CFLAGS = -g -Wall -Werror -Wextra
-INCLUDES = $(addprefix -I,$(INCLUDES_DIR))
+.PHONY: all re clean fclean bonus
 
-## bash commands
-RM = rm -f
+# Program file name
+NAME	= cub3D
 
-## valgrind
-VALGRIND = valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes -q --tool=memcheck
+# Mode
+BONUS = 0
 
-## directories
-INCLUDES_DIR = ./includes ./mlx
-OBJ_DIR = ./obj
+# Compiler and compilation flags
+CC		= gcc
+CFLAGS	= -Werror -Wextra -Wall -g3 #-fsanitize=address
 
-## libs
-MLIBX_PATH = ./mlx
-MLIBX = $(MLIBX_PATH)/libmlx.a
-MLX_FLAGS = -L$(MLIBX_PATH) -lmlx -lXext -lX11
+# Minilibx
+MLX_PATH	= minilibx-linux/
+MLX_NAME	= libmlx.a
+MLX			= $(MLX_PATH)$(MLX_NAME)
 
-LIBMATH_FLAGS = -lm
+# Libft
+LIBFT_PATH	= libft/
+LIBFT_NAME	= libft.a
+LIBFT		= $(LIBFT_PATH)$(LIBFT_NAME)
 
-## source files
-SRCS = main.c
+# Sources
+SRC_PATH = ./
+SRC		= 	main.c \
+			init.c \
+			raycasting.c \
+			move_player.c \
 
-## object files
-OBJS = $(addprefix $(OBJ_DIR)/,$(SRCS:.c=.o))
+SRCS	= $(addprefix $(SRC_PATH), $(SRC))
 
-all: $(NAME)
+# Objects
+OBJ_PATH	= ./objects/
+OBJ			= $(SRC:.c=.o)
+OBJS		= $(addprefix $(OBJ_PATH), $(OBJ))
 
-$(NAME): $(MLIBX) $(OBJS)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(INCLUDES) $(MLX_FLAGS) $(LIBMATH_FLAGS)
+# Includes
+INC			=	-I ./includes/\
+				-I ./libft/\
+				-I ./minilibx-linux/
 
-$(MLIBX):
-	make -C $(MLIBX_PATH)
+# Main rule
+all: $(OBJ_PATH) $(MLX) $(LIBFT) $(NAME)
 
-$(OBJ_DIR)/%.o: %.c
-	@mkdir -p $(OBJ_DIR)
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+# Objects directory rule
+$(OBJ_PATH):
+	mkdir -p $(OBJ_PATH)
 
+# Objects rule
+$(OBJ_PATH)%.o: $(SRC_PATH)%.c
+	$(CC) $(CFLAGS) -DBONUS=$(BONUS) -c $< -o $@ $(INC)
+
+# Project file rule
+$(NAME): $(OBJS)
+	$(CC) $(CFLAGS) -DBONUS=$(BONUS) $(OBJS) -o $@ $(INC) $(LIBFT) $(MLX) -lXext -lX11 -lm
+
+# Libft rule
+$(LIBFT):
+	make -sC $(LIBFT_PATH)
+
+# MLX rule
+$(MLX):
+	make -sC $(MLX_PATH)
+
+bonus:
+	make all BONUS=1
+
+# Clean up build files rule
 clean:
-	make clean -C $(MLIBX_PATH)
-	$(RM) -r $(OBJ_DIR)
+	rm -rf $(OBJ_PATH)
+	make -C $(LIBFT_PATH) clean
+	make -C $(MLX_PATH) clean
 
+# Remove program executable
 fclean: clean
-	$(RM) $(NAME)
+	rm -f $(NAME)
+	make -C $(LIBFT_PATH) fclean
 
+# Clean + remove executable
 re: fclean all
-
-run: all
-	clear
-	./$(NAME) $$MAP
-
-valgrind: $(NAME)
-	$(VALGRIND) ./$(NAME) $$MAP
-
-.PHONY: all clean fclean re run valgrind
